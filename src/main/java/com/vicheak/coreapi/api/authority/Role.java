@@ -1,5 +1,6 @@
-package com.vicheak.coreapi.api.user;
+package com.vicheak.coreapi.api.authority;
 
+import com.vicheak.coreapi.api.user.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,9 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+
+    @OneToMany(mappedBy = "role")
+    List<UserRole> userRoles;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Authority> authorities;

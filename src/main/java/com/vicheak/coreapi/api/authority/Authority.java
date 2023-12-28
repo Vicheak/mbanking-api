@@ -1,4 +1,4 @@
-package com.vicheak.coreapi.api.user;
+package com.vicheak.coreapi.api.authority;
 
 import jakarta.persistence.*;
 import lombok.*;
