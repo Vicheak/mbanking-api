@@ -1,7 +1,10 @@
 package com.vicheak.coreapi.api.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,5 +30,9 @@ public class User {
     private Boolean isVerified;
     private String verifiedCode;
     private Boolean isDeleted;
+
+    @OneToMany(mappedBy = "user")
+    @JsonBackReference
+    List<UserRole> userRoles;
 
 }
