@@ -2,6 +2,7 @@ package com.vicheak.coreapi.api.user.web;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
@@ -19,5 +20,8 @@ public record CreateUserDto(@NotBlank
                             String password,
                             @NotBlank
                             String phoneNumber,
+                            @NotNull
+                            Boolean isStudent,
+                            String studentCardNo,
                             List<Integer> roleIds) {
 }

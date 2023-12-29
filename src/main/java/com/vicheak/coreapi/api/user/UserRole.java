@@ -1,5 +1,6 @@
 package com.vicheak.coreapi.api.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.vicheak.coreapi.api.authority.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,10 +24,12 @@ public class UserRole {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
+    @JsonBackReference
     private Role role;
 
     @CreationTimestamp
