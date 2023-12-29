@@ -11,4 +11,10 @@ public interface UserService {
 
     UserDto findById(Integer id);
 
+    UserDto findByUuid(String uuid);
+
+    void deleteByUuid(String uuid);
+
+    void disableByUuid(String uuid);
+
 }

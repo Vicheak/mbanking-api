@@ -44,4 +44,30 @@ public class UserRestController {
                 .build();
     }
 
+    @GetMapping("/{uuid}")
+    public BaseApi<?> findByUuid(@PathVariable String uuid){
+
+        UserDto user = userService.findByUuid(uuid);
+
+        return BaseApi.builder()
+                .isSuccess(true)
+                .code(HttpStatus.OK.value())
+                .message("User has been found")
+                .timestamp(LocalDateTime.now())
+                .payload(user)
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{uuid}")
+    public void deleteByUuid(@PathVariable String uuid){
+        userService.deleteByUuid(uuid);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{uuid}/disable")
+    public void disableByUuid(@PathVariable String uuid){
+        userService.disableByUuid(uuid);
+    }
+
 }

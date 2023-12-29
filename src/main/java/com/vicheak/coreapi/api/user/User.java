@@ -31,8 +31,7 @@ public class User {
     private String verifiedCode;
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "user")
-    @JsonBackReference
-    List<UserRole> userRoles;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<UserRole> userRoles;
 
 }
