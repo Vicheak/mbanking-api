@@ -10,6 +10,7 @@ import com.vicheak.coreapi.api.user.UserRole;
 import com.vicheak.coreapi.api.user.UserRoleRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class DataInitialization {
     private final UserRoleRepository userRoleRepository;
     private final RoleRepository roleRepository;
     private final AuthorityRepository authorityRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void init() {
@@ -85,6 +87,7 @@ public class DataInitialization {
                 .uuid(UUID.randomUUID().toString())
                 .name("Administrator")
                 .email("admin@gmail.com")
+                .password(passwordEncoder.encode("12345678"))
                 .gender("Male")
                 .isVerified(true)
                 .phoneNumber("09876543")

@@ -1,5 +1,6 @@
 package com.vicheak.coreapi.api.authority;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,7 @@ public class Authority {
     private String name;
 
     @ManyToMany(mappedBy = "authorities")
+    @JsonBackReference
     private List<Role> roles;
 
 }

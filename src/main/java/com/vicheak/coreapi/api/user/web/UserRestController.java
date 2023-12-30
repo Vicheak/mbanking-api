@@ -45,7 +45,7 @@ public class UserRestController {
     }
 
     @GetMapping("/{uuid}")
-    public BaseApi<?> findByUuid(@PathVariable String uuid){
+    public BaseApi<?> findByUuid(@PathVariable String uuid) {
 
         UserDto user = userService.findByUuid(uuid);
 
@@ -60,14 +60,28 @@ public class UserRestController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{uuid}")
-    public void deleteByUuid(@PathVariable String uuid){
+    public void deleteByUuid(@PathVariable String uuid) {
         userService.deleteByUuid(uuid);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{uuid}/disable")
-    public void disableByUuid(@PathVariable String uuid){
+    public void disableByUuid(@PathVariable String uuid) {
         userService.disableByUuid(uuid);
+    }
+
+    @PutMapping("/{uuid}")
+    public BaseApi<?> updateByUuid(@PathVariable String uuid,
+                                   @Valid @RequestBody UpdateUserDto updateUserDto) {
+        UserDto updatedUser = userService.updateByUuid(uuid, updateUserDto);
+
+        return BaseApi.builder()
+                .isSuccess(true)
+                .code(HttpStatus.OK.value())
+                .message("User has been updated successfully")
+                .timestamp(LocalDateTime.now())
+                .payload(updatedUser)
+                .build();
     }
 
 }

@@ -2,10 +2,12 @@ package com.vicheak.coreapi.api.user;
 
 import com.vicheak.coreapi.api.authority.Role;
 import com.vicheak.coreapi.api.user.web.CreateUserDto;
+import com.vicheak.coreapi.api.user.web.UpdateUserDto;
 import com.vicheak.coreapi.api.user.web.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final UserRoleRepository userRoleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Iterable<UserDto> findAll() {
@@ -34,6 +37,7 @@ public class UserServiceImpl implements UserService {
     public UserDto createNew(CreateUserDto createUserDto) {
         User newUser = userMapper.createUserDtoToUser(createUserDto);
         newUser.setUuid(UUID.randomUUID().toString());
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         newUser.setIsDeleted(false);
         newUser.setIsVerified(true);
 
@@ -97,6 +101,36 @@ public class UserServiceImpl implements UserService {
         user.setIsDeleted(true);
 
         userRepository.save(user);
+    }
+
+    @Override
+    public UserDto updateByUuid(String uuid, UpdateUserDto updateUserDto) {
+        User user = userRepository.findByUuid(uuid)
+                .orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                String.format("User UUID : %s is not found!", uuid))
+                );
+
+        userMapper.updateUserDtoToUser(updateUserDto, user);
+
+        //remove previous user roles
+        userRoleRepository.deleteAll(user.getUserRoles());
+
+        List<UserRole> userRoles = new ArrayList<>();
+
+        updateUserDto.roleIds().forEach(id ->
+                userRoles.add(UserRole.builder()
+                        .user(user)
+                        .role(Role.builder().id(id).build())
+                        .build()));
+
+        user.setUserRoles(userRoles);
+
+        userRepository.save(user);
+
+        userRoleRepository.saveAll(userRoles);
+
+        return findById(user.getId());
     }
 
 }
