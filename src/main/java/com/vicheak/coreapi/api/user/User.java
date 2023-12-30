@@ -1,6 +1,6 @@
 package com.vicheak.coreapi.api.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.vicheak.coreapi.api.account.UserAccount;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,5 +33,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<UserRole> userRoles;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<UserAccount> userAccounts;
 
 }

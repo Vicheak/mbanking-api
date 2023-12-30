@@ -1,7 +1,6 @@
-package com.vicheak.coreapi.api.user;
+package com.vicheak.coreapi.api.account;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.vicheak.coreapi.api.authority.Role;
+import com.vicheak.coreapi.api.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,27 +14,27 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "users_roles")
-public class UserRole {
+@Table(name = "users_accounts")
+public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "user_id")
-    @JsonBackReference
-    private User user;
-
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "role_id")
-    @JsonBackReference
-    private Role role;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    private Boolean isDisabled;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
 
 }

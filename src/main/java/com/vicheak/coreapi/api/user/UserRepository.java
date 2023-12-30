@@ -12,4 +12,6 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     void deleteByUuid(String uuid);
 
+    Optional<User> findByEmailAndIsDeletedFalse(String email);
+
 }
