@@ -95,14 +95,33 @@ public class DataInitialization {
                 .isStudent(false)
                 .build();
 
+        User customer = User.builder()
+                .uuid(UUID.randomUUID().toString())
+                .name("Customer")
+                .email("customer@gmail.com")
+                .password(passwordEncoder.encode("12345678"))
+                .gender("Male")
+                .isVerified(true)
+                .phoneNumber("09876543")
+                .isDeleted(false)
+                .isStudent(false)
+                .build();
+
         userRepository.save(user);
+        userRepository.save(customer);
 
         UserRole userRoleAdmin = UserRole.builder()
                 .user(user)
                 .role(roleAdmin)
                 .build();
 
+        UserRole userRoleCustomer = UserRole.builder()
+                .user(customer)
+                .role(roleCustomer)
+                .build();
+
         userRoleRepository.save(userRoleAdmin);
+        userRoleRepository.save(userRoleCustomer);
     }
 
 }
